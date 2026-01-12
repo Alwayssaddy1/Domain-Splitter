@@ -4,7 +4,6 @@ import sys
 import time
 import signal
 
-# ================= COLORS =================
 BLUE = "\033[94m"
 WHITE = "\033[97m"
 RED = "\033[91m"
@@ -15,11 +14,9 @@ PINK = "\033[95m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
-# ================= GLOBAL FLAGS =================
 stop_requested = False
 current_out_file = None
 
-# ================= CTRL+C HANDLER =================
 def handle_ctrl_c(signum, frame):
     global stop_requested, current_out_file
     stop_requested = True
@@ -32,10 +29,8 @@ def handle_ctrl_c(signum, frame):
 
 signal.signal(signal.SIGINT, handle_ctrl_c)
 
-# ================= CLEAR =================
 os.system("clear" if os.name == "posix" else "cls")
 
-# ================= BANNER =================
 banner = [
     " ███████╗██████╗ ██╗     ██╗████████╗████████╗███████╗██████╗ ",
     " ██╔════╝██╔══██╗██║     ██║╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗",
@@ -49,11 +44,9 @@ for i, line in enumerate(banner):
     print(f"{BLUE if i % 2 == 0 else WHITE}{line}{RESET}")
     time.sleep(0.04)
 
-# ================= VERSION =================
 print(f"{YELLOW}                 Version: v1.1{RESET}")
 time.sleep(0.2)
 
-# ================= CREDIT =================
 credit = "                 Coded By: SAD MAN"
 for ch in credit:
     sys.stdout.write(f"{BOLD}{RED}{ch}{RESET}")
@@ -61,12 +54,10 @@ for ch in credit:
     time.sleep(0.004)
 print()
 
-# ================= CONTACT =================
 print(f"{GREEN}                 Contact: https://t.me/Alwayssaddy{RESET}")
 
 print(f"{YELLOW}{'='*70}{RESET}\n")
 
-# ================= INPUT =================
 input_file = input(f"{CYAN}Enter the path of domain list: {RESET}").strip()
 if not os.path.isfile(input_file):
     print(f"{RED}[!] File not found!{RESET}")
@@ -81,8 +72,6 @@ except ValueError:
     sys.exit(1)
 
 output_dir = os.path.dirname(os.path.abspath(input_file)) or "."
-
-# ================= HELPERS =================
 def format_time(seconds):
     seconds = int(seconds)
     if seconds < 60:
@@ -91,7 +80,6 @@ def format_time(seconds):
         return f"{seconds//60}m {seconds%60}s"
     return f"{seconds//3600}h {(seconds%3600)//60}m"
 
-# ================= COUNTING WITH PROGRESS + ETA =================
 file_size = os.path.getsize(input_file)
 read_bytes = 0
 total_lines = 0
@@ -125,7 +113,6 @@ if stop_requested:
     print(f"{YELLOW}⚠️ Stopped during counting.{RESET}")
     sys.exit(0)
 
-# ================= SPLITTING WITH ETA =================
 def split_progress(done, total, start_time):
     percent = done / total
     filled = int(35 * percent)
@@ -181,7 +168,6 @@ if current_out_file:
 split_progress(total_lines, total_lines, start_time)
 print("\n")
 
-# ================= FINAL STATUS =================
 if stop_requested:
     print(f"{YELLOW}⚠️ Stopped by user. Progress saved safely.{RESET}")
     print(f"{CYAN}📄 Last batch written: batch{batch_num}.txt{RESET}")
